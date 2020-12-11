@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {log} from 'util';
 
 @Component({
   selector: 'app-root',
@@ -9,13 +10,14 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 export class AppComponent {
   title = 'custom-calculator';
   value = 0;
-  result: string | number[] = 'The result will be displayed here 🚀 🚀 🚀';
+  result = 'The result will be displayed here 🚀 🚀 🚀';
 
   constructor(private snackBar: MatSnackBar) {}
 
   calculate(value: number): void {
-    if (value === 0) {
-      this.snackBar.open(`${value} cannot be calculated`, 'Close', {
+    console.log(value);
+    if (value === 0 || !value) {
+      this.snackBar.open(`Value cannot be calculated`, 'Close', {
         duration: 3000,
       });
     } else {
