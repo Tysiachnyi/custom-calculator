@@ -1,0 +1,11 @@
+<div>
+  <p>How much people you want to add?</p>
+  <mat-form-field>
+    <mat-label>People</mat-label>
+    <input type="number" matInput [(ngModel)]="countOfUsers" />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="countOfUsers">Add</button>
+  <button mat-button (click)="onNoClick()">Close</button>
+</div>
