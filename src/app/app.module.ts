@@ -13,9 +13,11 @@ import {MatButtonModule} from '@angular/material/button';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatCardModule} from '@angular/material/card';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MainComponent } from './components/main/main.component';
+import { ExportComponent } from './components/export/export.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, MainComponent, ExportComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

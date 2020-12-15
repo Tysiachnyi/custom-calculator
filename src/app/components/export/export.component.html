@@ -1,0 +1,30 @@
+
+<div style='margin-top: 50px' fxLayout="row" fxLayoutAlign="space-around">
+  <div style='width: 200px'>
+    <mat-form-field class="example-form-field">
+      <mat-label>Credit card</mat-label>
+      <input matInput type="text" [(ngModel)]="card">
+      <button mat-button *ngIf="card" matSuffix mat-icon-button aria-label="Clear" (click)="card=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+  <div style='width: 200px'>
+    <mat-form-field class="example-form-field">
+      <mat-label>Add sum</mat-label>
+      <input matInput type="number" [(ngModel)]="value">
+      <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=0">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+  <div style='width: 200px'>
+    <mat-form-field class="example-form-field">
+      <mat-label>Add name</mat-label>
+      <input matInput type="text" [(ngModel)]="name">
+      <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+</div>
