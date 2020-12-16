@@ -41,13 +41,24 @@ export class ExportComponent implements OnInit {
     );
   }
 
-  AddMoreUsers(): void {
+  addMoreUsers(): void {
     const dialogRef = this.dialog.open(ExportDialogComponent, {
       width: '300px',
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result && result > 0) {
+        console.log(result);
+
+        for (let i = 0; i <= result; i++) {
+          this.users.push(
+            this.fb.group({
+              creditCard: new FormControl(''),
+              sum: new FormControl(0),
+              name: new FormControl(''),
+            })
+          );
+        }
       }
     });
   }
