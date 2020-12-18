@@ -51,7 +51,7 @@ export class ExportComponent implements OnInit {
       if (result && result > 0) {
         console.log(result);
 
-        for (let i = 0; i <= result; i++) {
+        for (let i = 1; i <= result; i++) {
           this.users.push(
             this.fb.group({
               creditCard: new FormControl(''),
@@ -65,17 +65,22 @@ export class ExportComponent implements OnInit {
   }
 
   exportToCsv(data: any): void {
-    const newValue = data.map(item => {
-      return {
-        ...item,
-        allPayload: this.convertSum(item.sum),
-      };
-    });
+    const newValue = data.reduce(
+      (res, user) => [
+        ...res,
+        ...this.convertSum(user.sum).map(payout => ({
+          ...user,
+          payout,
+          payoutData: `${user.creditCard};${payout}`,
+        })),
+      ],
+      []
+    );
     console.log(newValue);
 
-    const replacer = (key, value) => (value === null ? '' : value); // specify how you want to handle null values here
+    const replacer = (key, value) => (value === null ? '' : value);
     const header = Object.keys(newValue[0]);
-    const csv = data.map(row =>
+    const csv = newValue.map(row =>
       header
         .map(fieldName => JSON.stringify(row[fieldName], replacer))
         .join(',')
@@ -88,18 +93,17 @@ export class ExportComponent implements OnInit {
   }
 
   convertSum(value: number): any {
-    const maxNum = 4950;
+    const result = [];
 
-    const allData = Array.from(
-      {length: Math.floor(value / maxNum)},
-      () => maxNum
-    );
-    const leftSide = value % maxNum;
+    while (value > 0) {
+      const rand = Math.floor(Math.random() * (4990 - 4950) + 4950);
+      const nextNumber = value < rand ? value : rand;
 
-    if (leftSide !== 0) {
-      allData.push(leftSide);
+      result.push(nextNumber);
+
+      value -= nextNumber;
     }
-    const result = allData.toString().split(',').join(', ');
+
     return result;
   }
 }
