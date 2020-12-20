@@ -79,7 +79,7 @@ export class ExportComponent implements OnInit {
             payout: Math.floor(payout),
             name: index === 0 ? user.name : '',
             payoutData: `${user.creditCard.replace(/\s/g, '')};${Math.floor(
-              payout
+              payout * 100
             )}`,
             total: index === 0 ? user.sum : '',
           })),
