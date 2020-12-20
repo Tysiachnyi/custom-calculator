@@ -20,7 +20,7 @@ export class MainComponent {
         duration: 3000,
       });
     } else {
-      const maxNum = 4950;
+      const maxNum = Math.floor(Math.random() * (4990 - 4950) + 4950);
 
       const allData = Array.from(
         {length: Math.floor(value / maxNum)},

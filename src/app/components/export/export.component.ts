@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {ExportDialogComponent} from '../export-dialog/export-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
-import {saveAs} from 'file-saver';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-export',
@@ -76,27 +76,43 @@ export class ExportComponent implements OnInit {
           ...res,
           ...this.convertSum(user.sum).map((payout, index) => ({
             creditCard: user.creditCard.trim().replace(/\s/g, ''),
-            payout,
+            payout: Math.floor(payout),
             name: index === 0 ? user.name : '',
-            payoutData: `${user.creditCard.replace(/\s/g, '')};${payout}`,
+            payoutData: `${user.creditCard.replace(/\s/g, '')};${Math.floor(
+              payout
+            )}`,
             total: index === 0 ? user.sum : '',
           })),
         ],
         []
       );
 
-      const replacer = (key, value) => (value === null ? '' : value);
-      const header = Object.keys(newValue[0]);
-      const csv = newValue.map(row =>
-        header
-          .map(fieldName => JSON.stringify(row[fieldName], replacer))
-          .join(',')
-      );
-      csv.unshift(header.join(','));
-      const csvArray = csv.join('\r\n');
+      const binaryWS = XLSX.utils.json_to_sheet(newValue);
 
-      const blob = new Blob([csvArray], {type: 'text/csv'});
-      saveAs(blob, 'myFile.csv');
+      const wb = XLSX.utils.book_new();
+
+      // Name your sheet
+      XLSX.utils.book_append_sheet(wb, binaryWS, 'Payout Data');
+
+      // export your excel
+      XLSX.writeFile(wb, 'PayoutData.xlsx');
+
+      // const replacer = (key, value) => (value === null ? '' : value);
+      // const header = Object.keys(newValue[0]);
+      // const csv = newValue.map(row =>
+      //   header
+      //     .map(fieldName => JSON.stringify(row[fieldName], replacer))
+      //     .join(',')
+      // );
+      // csv.unshift(header.join(','));
+      // console.log('csv', csv);
+      // const csvArray = csv.join('\r\n');
+      // console.log('csvArray', csvArray);
+      //
+      // const blob = new Blob([csvArray], {
+      //   type: 'application/vnd.ms-excel',
+      // });
+      // saveAs(blob, 'PayoutData.xls');
     } else {
       this.snackBar.open(`You cant export empty list `, 'Close', {
         duration: 1500,
