@@ -1,0 +1,59 @@
+<div
+  style="margin-top: 50px"
+  fxLayout="row"
+  fxLayoutAlign="space-evenly center"
+>
+  <div></div>
+  <div></div>
+  <button mat-raised-button color="primary" (click)="addNewUser()">
+    New user
+  </button>
+  <button mat-raised-button color="primary" (click)="addMoreUsers()">
+    Add a lot of users
+  </button>
+  <button mat-raised-button color="accent" (click)="exportToCsv(users.value)">
+    Export to csv
+  </button>
+  <div></div>
+  <div></div>
+</div>
+<form [formGroup]="usersForm" *ngIf="users.value.length > 0">
+  <div formArrayName="users">
+    <div *ngFor="let user of users.controls; let i = index">
+      <div [formGroupName]="i">
+        <div
+          style="margin-top: 50px"
+          fxLayout="row"
+          fxLayoutAlign="space-evenly center"
+        >
+          <button
+            mat-raised-button
+            color="warn"
+            (click)="this.users.removeAt(i)"
+          >
+            Delete user
+          </button>
+          <div style="width: 200px">
+            <mat-form-field class="example-form-field">
+              <mat-label>Credit card</mat-label>
+              <input matInput type="text" formControlName="creditCard" />
+            </mat-form-field>
+          </div>
+          <div style="width: 200px">
+            <mat-form-field class="example-form-field">
+              <mat-label>Add sum</mat-label>
+              <input matInput type="number" formControlName="sum" />
+            </mat-form-field>
+          </div>
+          <div style="width: 200px">
+            <mat-form-field class="example-form-field">
+              <mat-label>Add name</mat-label>
+              <input matInput type="text" formControlName="name" />
+            </mat-form-field>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+</form>
