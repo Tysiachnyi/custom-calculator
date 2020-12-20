@@ -11,6 +11,8 @@ import {saveAs} from 'file-saver';
 })
 export class ExportComponent implements OnInit {
   usersForm: FormGroup;
+  currentName = '';
+  globalCount = 0;
 
   constructor(private fb: FormBuilder, public dialog: MatDialog) {
     this.usersForm = this.fb.group({
@@ -24,9 +26,7 @@ export class ExportComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    console.log(this.users);
-  }
+  ngOnInit(): void {}
 
   get users(): Partial<FormArray> {
     return this.usersForm.get('users');
@@ -68,14 +68,17 @@ export class ExportComponent implements OnInit {
     const newValue = data.reduce(
       (res, user) => [
         ...res,
-        ...this.convertSum(user.sum).map(payout => ({
-          ...user,
+        ...this.convertSum(user.sum).map((payout, index) => ({
+          creditCard: user.creditCard.trim().replace(/\s/g, ''),
+          name: index === 0 ? user.name : '',
+          total: index === 0 ? user.sum : '',
           payout,
-          payoutData: `${user.creditCard};${payout}`,
+          payoutData: `${user.creditCard.replace(/\s/g, '')};${payout}`,
         })),
       ],
       []
     );
+
     console.log(newValue);
 
     const replacer = (key, value) => (value === null ? '' : value);
