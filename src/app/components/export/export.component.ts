@@ -3,6 +3,7 @@ import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {ExportDialogComponent} from '../export-dialog/export-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {saveAs} from 'file-saver';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-export',
@@ -14,7 +15,11 @@ export class ExportComponent implements OnInit {
   currentName = '';
   globalCount = 0;
 
-  constructor(private fb: FormBuilder, public dialog: MatDialog) {
+  constructor(
+    private fb: FormBuilder,
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar
+  ) {
     this.usersForm = this.fb.group({
       users: this.fb.array([
         this.fb.group({
@@ -65,37 +70,41 @@ export class ExportComponent implements OnInit {
   }
 
   exportToCsv(data: any): void {
-    const newValue = data.reduce(
-      (res, user) => [
-        ...res,
-        ...this.convertSum(user.sum).map((payout, index) => ({
-          creditCard: user.creditCard.trim().replace(/\s/g, ''),
-          name: index === 0 ? user.name : '',
-          total: index === 0 ? user.sum : '',
-          payout,
-          payoutData: `${user.creditCard.replace(/\s/g, '')};${payout}`,
-        })),
-      ],
-      []
-    );
+    if (data.length !== 0) {
+      const newValue = data.reduce(
+        (res, user) => [
+          ...res,
+          ...this.convertSum(user.sum).map((payout, index) => ({
+            creditCard: user.creditCard.trim().replace(/\s/g, ''),
+            payout,
+            name: index === 0 ? user.name : '',
+            payoutData: `${user.creditCard.replace(/\s/g, '')};${payout}`,
+            total: index === 0 ? user.sum : '',
+          })),
+        ],
+        []
+      );
 
-    console.log(newValue);
+      const replacer = (key, value) => (value === null ? '' : value);
+      const header = Object.keys(newValue[0]);
+      const csv = newValue.map(row =>
+        header
+          .map(fieldName => JSON.stringify(row[fieldName], replacer))
+          .join(',')
+      );
+      csv.unshift(header.join(','));
+      const csvArray = csv.join('\r\n');
 
-    const replacer = (key, value) => (value === null ? '' : value);
-    const header = Object.keys(newValue[0]);
-    const csv = newValue.map(row =>
-      header
-        .map(fieldName => JSON.stringify(row[fieldName], replacer))
-        .join(',')
-    );
-    csv.unshift(header.join(','));
-    const csvArray = csv.join('\r\n');
-
-    const blob = new Blob([csvArray], {type: 'text/csv'});
-    saveAs(blob, 'myFile.csv');
+      const blob = new Blob([csvArray], {type: 'text/csv'});
+      saveAs(blob, 'myFile.csv');
+    } else {
+      this.snackBar.open(`You cant export empty list `, 'Close', {
+        duration: 1500,
+      });
+    }
   }
 
-  convertSum(value: number): any {
+  convertSum(value: number): number[] {
     const result = [];
 
     while (value > 0) {

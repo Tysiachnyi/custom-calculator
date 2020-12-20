@@ -26,7 +26,13 @@
           fxLayout="row"
           fxLayoutAlign="space-evenly center"
         >
-          <div>{{ i }}</div>
+          <button
+            mat-raised-button
+            color="warn"
+            (click)="this.users.removeAt(i)"
+          >
+            Delete user
+          </button>
           <div style="width: 200px">
             <mat-form-field class="example-form-field">
               <mat-label>Credit card</mat-label>
