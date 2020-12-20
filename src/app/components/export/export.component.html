@@ -17,7 +17,11 @@
   <div></div>
   <div></div>
 </div>
-<form [formGroup]="usersForm" *ngIf="users.value.length > 0">
+<form
+  [formGroup]="usersForm"
+  *ngIf="users.value.length > 0"
+  (keyup.enter)="addNewUser()"
+>
   <div formArrayName="users">
     <div *ngFor="let user of users.controls; let i = index">
       <div [formGroupName]="i">
