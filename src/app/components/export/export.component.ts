@@ -76,11 +76,14 @@ export class ExportComponent implements OnInit {
           ...res,
           ...this.convertSum(user.sum).map((payout, index) => ({
             creditCard: user.creditCard.trim().replace(/\s/g, ''),
-            payout: Math.floor(payout),
+            payout:
+              payout.toFixed(2).toString().split('.')[1] === '00'
+                ? payout.toFixed(0)
+                : payout.toFixed(2),
             name: index === 0 ? user.name : '',
-            payoutData: `${user.creditCard.replace(/\s/g, '')};${Math.floor(
+            payoutData: `${user.creditCard.replace(/\s/g, '')};${(
               payout * 100
-            )}`,
+            ).toFixed(0)}`,
             total: index === 0 ? user.sum : '',
           })),
         ],
@@ -96,23 +99,6 @@ export class ExportComponent implements OnInit {
 
       // export your excel
       XLSX.writeFile(wb, 'PayoutData.xlsx');
-
-      // const replacer = (key, value) => (value === null ? '' : value);
-      // const header = Object.keys(newValue[0]);
-      // const csv = newValue.map(row =>
-      //   header
-      //     .map(fieldName => JSON.stringify(row[fieldName], replacer))
-      //     .join(',')
-      // );
-      // csv.unshift(header.join(','));
-      // console.log('csv', csv);
-      // const csvArray = csv.join('\r\n');
-      // console.log('csvArray', csvArray);
-      //
-      // const blob = new Blob([csvArray], {
-      //   type: 'application/vnd.ms-excel',
-      // });
-      // saveAs(blob, 'PayoutData.xls');
     } else {
       this.snackBar.open(`You cant export empty list `, 'Close', {
         duration: 1500,
