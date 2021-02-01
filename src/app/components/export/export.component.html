@@ -17,6 +17,34 @@
   <div></div>
   <div></div>
 </div>
+<div
+  style="margin-top: 50px"
+  fxLayout="row"
+  fxLayoutAlign="space-around center"
+>
+  <div></div>
+  <div>
+    <mat-slider
+      [max]="4999"
+      [min]="4950"
+      [thumbLabel]="true"
+      [(ngModel)]="randomValue"
+    ></mat-slider>
+  </div>
+  <div>
+    <mat-form-field class="example-form-field">
+      <mat-label>Random sum</mat-label>
+      <input
+        [max]="4999"
+        [min]="4950"
+        matInput
+        type="number"
+        [(ngModel)]="randomValue"
+      />
+    </mat-form-field>
+  </div>
+  <div></div>
+</div>
 <form
   [formGroup]="usersForm"
   *ngIf="users.value.length > 0"

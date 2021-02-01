@@ -16,6 +16,7 @@ import {MainComponent} from './components/main/main.component';
 import {ExportComponent} from './components/export/export.component';
 import {ExportDialogComponent} from './components/export-dialog/export-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatSliderModule} from '@angular/material/slider';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatSnackBarModule,
     ReactiveFormsModule,
     MatDialogModule,
+    MatSliderModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

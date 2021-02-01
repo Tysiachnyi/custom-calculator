@@ -14,6 +14,7 @@ export class ExportComponent implements OnInit {
   usersForm: FormGroup;
   currentName = '';
   globalCount = 0;
+  randomValue = 4950;
 
   constructor(
     private fb: FormBuilder,
@@ -76,10 +77,7 @@ export class ExportComponent implements OnInit {
           ...res,
           ...this.convertSum(user.sum).map((payout, index) => ({
             creditCard: user.creditCard.trim().replace(/\s/g, ''),
-            payout:
-              payout.toFixed(2).toString().split('.')[1] === '00'
-                ? payout.toFixed(0)
-                : payout.toFixed(2),
+            payout: +payout.toFixed(2),
             name: index === 0 ? user.name : '',
             payoutData: `${user.creditCard.replace(/\s/g, '')};${(
               payout * 100
