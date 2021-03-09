@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ErrorHandler, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {ExportDialogComponent} from '../export-dialog/export-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
@@ -19,7 +19,8 @@ export class ExportComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private handleError: ErrorHandler
   ) {
     this.usersForm = this.fb.group({
       users: this.fb.array([
