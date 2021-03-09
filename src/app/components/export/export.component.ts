@@ -109,7 +109,7 @@ export class ExportComponent implements OnInit {
     const result = [];
 
     while (value > 0) {
-      const rand = Math.floor(Math.random() * (4990 - 4950) + 4950);
+      const rand = Math.floor(Math.random() * (4949 - 4900) + 4900);
       const nextNumber = value < rand ? value : rand;
 
       result.push(nextNumber);
